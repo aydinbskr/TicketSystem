@@ -1,0 +1,80 @@
+﻿@using TicketSystem.Entities.Dtos.SessionDtos
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<SessionDetailDto>
+
+
+<div class="section-header">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <h1 class="page-header">List Session</h1>
+            </div>
+
+        </div>
+    </div> <!-- /.container -->
+</div> <!-- /.section-colored -->
+
+<div class="container container-int">
+
+    <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">List Session</li>
+    </ol>
+    <div class="row">
+       
+        <div class="col-lg-9">
+           <div class="row">
+                    <div class="col-9 my-3">
+            <h3>All Sessions</h3>
+            <table class="table table-hover table-borderless">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">#</th>
+
+                        <th scope="col">SessionTime</th>
+                        <th scope="col">MovieName</th>
+                        <th scope="col">SceneType</th>
+                        
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row">@Model.IndexOf(item)</th>
+
+                                <td>@item.SessionTime</td>
+                                <td>@item.MovieName</td>
+                                <td>@item.SceneType</td>
+                                
+                                <td>
+                                    <form method="get" asp-action="UpdateSession" asp-controller="Employee" asp-route-id=@item.SessionId>
+                                        <button class="btn btn-primary" type="submit">Update Session</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="post" asp-action="DeleteSession" asp-controller="Employee" asp-route-id=@item.SessionId>
+                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                                
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+           </div>     
+        </div>
+    </div>
+
+</div><!-- /.container -->

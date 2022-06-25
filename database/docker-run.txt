@@ -1,0 +1,1 @@
+docker run -p 1433:1433 --name my-sql-server-container my-sql-server-image

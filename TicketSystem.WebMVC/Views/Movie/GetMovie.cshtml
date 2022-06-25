@@ -1,0 +1,148 @@
+﻿@using TicketSystem.Entities.Dtos.MovieDtos
+@model MovieDetailDto
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+function showDiv() {
+  var div = document.getElementById("BuyTicketDiv");  
+  div.style.display = "block";
+
+  
+}
+
+
+
+function fill_sessions(sessions)
+{
+        var str_2d = "";
+        var str_3d = "";
+
+        sessions.forEach(function (session) {
+    
+            console.log(session.sessionId); //sessionId console' a yazdırma
+            var hour = session.sessionTime.substr(11, 5);
+            if (session.sceneType == "Normal") 
+            {
+                //get each list item returned value and add it as string
+                       
+                str_2d = str_2d + "<a class='btn btn-primary time' href='/Customer/GetTicketOfSession/"+session.sessionId+"'>" + hour + "<i class='fa fa-clock'></i></a>";
+                       
+            }
+            else 
+            {
+               str_3d = str_3d + "<a class='btn btn-primary time' href='/Customer/GetTicketOfSession/"+session.sessionId+"'>" + hour + "<i class='fa fa-clock'></i></a>";
+            }
+        });
+
+               
+        document.getElementById("panel-session-2d").innerHTML =str_2d;
+        document.getElementById("panel-session-3d").innerHTML =str_3d;
+}
+
+function getValues()
+{
+    var div2 = document.getElementById("session");
+    div2.style.display = "block";
+
+    const idToGet=document.getElementById("Movieid").innerText;
+    const dateToGet=document.getElementById("selectDate").value;
+
+    var url='/Customer/GetSessions/?id='+idToGet+'&date='+dateToGet;
+    
+    fetch(url)
+    .then((response)=> response.json())//parse Json data
+    .then((sessions)=> fill_sessions(sessions))
+}
+
+</script>
+<div class="section-header">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <h1 class="page-header">Movie Details</h1>
+            </div>
+
+        </div>
+    </div> <!-- /.container -->
+</div> <!-- /.section-colored -->
+
+<div class="container container-int">
+
+    <ol class="breadcrumb">
+        <li><a href="/Home/">Home</a></li>
+        <li class="active">@Model.MovieName</li>
+    </ol>
+
+    <div class="row">
+
+
+
+        <div class="col-md-4">
+           
+             @if(Model.MovieBanner!=null)
+             {
+                 var base64 = Convert.ToBase64String(@Model.MovieBanner!);
+                 var imgSrc = String.Format("data:image/gif;base64,{0}", base64); 
+                 <img class="img-responsive img-home-portfolio" src="@imgSrc"
+                 style="height:300px;width:250px" >
+              }
+              else
+              {
+                <img class="img-responsive img-home-portfolio" src="/images/no-image.jpg"
+                 style="height:300px;width:250px" >
+              }
+
+            
+
+        </div>
+
+        <div class="col-md-8">
+            <h3 id="Movieid">@Model.MovieId</h3>
+            <h3><small>Category</small></h3>
+            <small>@Model.CategoryName</small>
+            
+            <h3><small>Vision Date</small></h3>
+            <p><small>@Model.MovieVisionDate</small></p>
+            <h3>Review</h3>
+            @if (Model.MovieReview != null)
+            {
+                <p class="text-justify">@Model.MovieReview</p>
+            }
+            <a class="btn btn-primary"  onclick="showDiv()">Buy <i class="fa fa-angle-right"></i></a>
+            
+        </div>
+
+    </div>
+    <div class="row" id="BuyTicketDiv">
+        <div class="col-lg-3">
+            <form class="SelectForm">
+                
+                <h3 class="searchHeader">Select date:</h3>
+                <div class="form-group">
+
+                    <input class="form-control" type="date" id="selectDate" min="2022-04-01" max="2022-06-30" onchange="getValues()" required>
+                    <span class="validity"></span>
+                </div>
+                
+            </form>
+
+        </div>
+         <div class="col-lg-9 mt-5" id="session" >
+             <div class="panel panel-default session">
+                <div class="panel-heading">2D</div>
+                <div class="panel-body" id="panel-session-2d">
+                    
+                </div>
+                <div class="panel-heading">3D</div>
+                <div class="panel-body" id="panel-session-3d" >
+                    
+                </div>
+            </div>
+               
+         </div>
+    </div>
+
+</div><!-- /.container -->

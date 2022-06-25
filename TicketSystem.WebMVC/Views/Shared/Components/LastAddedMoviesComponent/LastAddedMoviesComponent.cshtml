@@ -1,0 +1,66 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<MovieListingDto>
+@{
+    int maxFilm = 5;
+}
+
+<div class="list-group">
+    @if (Model.Count > 0)
+    {
+        if (Model.Count <= maxFilm)
+        {
+            foreach (var item in Model)
+            {
+                <div class="bg-light mx-0">
+                    <a class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between ">
+                            <h5 class="mb-1 text-danger fw-bold">@item.MovieName</h5>
+                        </div>
+                        <hr class="my-1">
+                        @if ((item.MovieVisionDate - DateTime.Now).Days > 0)
+                        {
+                            <small class="fw-light">For the movie @((item.MovieVisionDate - DateTime.Now).Days) day remains to Vision Date</small>
+                        }
+                        else
+                        {
+                            <small class="fw-light">The movie @(((item.MovieVisionDate - DateTime.Now).Days)*(-1)) ago begun the play</small>
+                        }
+                        <p class="mb-1">@item.MovieReview</p>
+                        <br />
+                        <small>Vision date : @item.MovieVisionDate.ToString()</small>
+                    </a>
+                    <br />
+                </div>
+            }
+        }
+        else
+        {
+            for (var i = 0; i < maxFilm; i++)
+            {
+                <a href="#" class="list-group-item list-group-item-action disabled" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1 text-danger fw-bold">@Model[i].MovieName</h5>
+                    </div>
+                    <hr class="my-1">
+                    @if ((Model[i].MovieVisionDate - DateTime.Now).Days > 0)
+                    {
+                        <small class="fw-light">For the movie @((Model[i].MovieVisionDate - DateTime.Now).Days) day remains to Vision Date</small>
+                    }
+                    else
+                    {
+                        <small class="fw-light">The movie @(((Model[i].MovieVisionDate - DateTime.Now).Days)*(-1)) ago begun the play</small>
+                    }
+                    @if (Model[i].MovieReview != null)
+                    {
+                        <p class="mb-1">@Model[i].MovieReview</p>
+                    }
+                    <small>Release date of the film @Model[i].MovieReleaseTime.ToString()</small>
+                    <br />
+                    <small>Vision date of the fim @Model[i].MovieVisionDate.ToString()</small>
+                </a>
+            }
+        }
+    }
+</div>

@@ -1,0 +1,99 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<MovieListingDto>
+
+
+<div class="section-header">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <h1 class="page-header">List Movies</h1>
+            </div>
+
+        </div>
+    </div> <!-- /.container -->
+</div> <!-- /.section-colored -->
+
+<div class="container container-int">
+
+    <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">List Movies</li>
+    </ol>
+    <div class="row">
+       
+        <div class="col-lg-9">
+           <div class="row">
+                    <div class="col-3  my-3 mx-0">
+            <h3>Last Added</h3>
+            @await Component.InvokeAsync("LastAddedMoviesComponent")
+        </div>
+        <div class="col-9 my-3">
+            <h3>All Movies</h3>
+            <table class="table table-hover table-borderless">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">#</th>
+
+                        <th scope="col">Movie Vision Date</th>
+                        <th scope="col">Movie Age Limit</th>
+                        <th scope="col">Movie Name</th>
+                        <th scope="col">Movie IMDB</th>
+                        <th scope="col">Movie Banner</th>
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete</th>
+                        <th scope="col">Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row">@Model.IndexOf(item)</th>
+
+                                <td>@item.MovieVisionDate</td>
+                                <td>@item.MovieAgeLimit</td>
+                                <td>@item.MovieName</td>
+                                <td>@item.MovieIMDB</td>
+                                @if(item.MovieBanner!=null)
+                                {
+                                    var base64 = Convert.ToBase64String(@item.MovieBanner!);
+                                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64); 
+                                    <td><img src="@imgSrc" width="80" height="80"></td>
+                                }
+                                else
+                                {
+                                    <td><img src="/images/no-image.jpg" width="80" height="80"></td>
+                                }
+                                
+                                <td>
+                                    <form method="get" asp-action="Update" asp-controller="Movie" asp-route-id=@item.MovieId>
+                                        <button class="btn btn-primary" type="submit">Update Movie</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="get" asp-action="Delete" asp-controller="Movie" asp-route-id=@item.MovieId>
+                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="get" asp-action="GetMovie" asp-controller="Movie" asp-route-id=@item.MovieId>
+                                        <button class="btn btn-warning" type="submit">See Movie Detail</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+           </div>     
+        </div>
+    </div>
+
+</div><!-- /.container -->

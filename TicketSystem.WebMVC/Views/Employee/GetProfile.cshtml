@@ -1,0 +1,46 @@
+﻿
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model EmployeeListingDto
+
+<div class="section-header">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <h1 class="page-header">Profile</h1>
+            </div>
+
+        </div>
+    </div> <!-- /.container -->
+</div> <!-- /.section-colored -->
+
+<div class="container container-int">
+
+    <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">Profile</li>
+    </ol>
+    <div class="row">
+       
+        <div class="col-lg-9">
+           <div class="row">
+                <h1 class="fw-light">@Model.EmpUserName</h1>
+                    <p class="lead text-muted">Your name is @Model.EmpName</p>
+                    <p class="lead text-muted">Your surname is @Model.EmpSurname</p>
+                    <p class="lead text-muted">Your phone number is @Model.EmpPhoneNumber</p>
+                    <p class="lead text-muted">Your address is @Model.EmpAddress</p>
+                    <br />
+                    <form method="get" asp-action="Update" asp-controller="Employee">
+                        <button class="btn btn-outline-secondary" type="submit">Update</button>
+                    </form>
+                    <br />
+                    
+           </div>     
+        </div>
+    </div>
+
+</div><!-- /.container -->

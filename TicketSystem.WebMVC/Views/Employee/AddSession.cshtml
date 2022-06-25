@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Add Session";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Session
+
+
+<div class="section-header">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <h1 class="page-header">Add Session</h1>
+            </div>
+
+        </div>
+    </div> <!-- /.container -->
+</div> <!-- /.section-colored -->
+
+<div class="container container-int">
+
+    <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">Add Session</li>
+    </ol>
+    <div class="row">
+       
+        <div class="col-lg-9">
+           <div class="row">
+                    <form asp-action="AddSession" method="post" asp-controller="Employee" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label>Movie :</label>
+                    <select asp-for="@Model.MovieId" asp-items="@ViewBag.Movies" class="form-control">
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Scene :</label>
+                    <select asp-for="@Model.SceneId" asp-items="@ViewBag.Scenes" class="form-control">
+                    </select>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label asp-for="@Model.SessionTime"></label>
+                    <input asp-for="@Model.SessionTime" class="form-control" min="2022-05-01" max="2022-06-30"/>
+                    <span asp-validation-for="@Model.SessionTime" class="text-danger"></span>
+                </div>
+
+               
+                <div class="form-group mb-3">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+           </div>     
+        </div>
+    </div>
+
+</div><!-- /.container -->
+

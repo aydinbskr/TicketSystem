@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "Movies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<Movie>
+@if (TempData["SuccessMessage"] != null)
+ {
+    <div class="alert alert-success alert-dismissable">
+         <strong>@TempData["SuccessMessage"]</strong>
+    </div>
+ }
+<script>
+jQuery(document).ready(function($) {
+    $('#filter').submit(function() { return !this.value; }).attr("disabled", "disabled");
+    return true;
+});
+
+$("form").find(":input").prop("disabled", false);
+</script>
+<div class="section-header">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12">
+                <h1 class="page-header">Movies</h1>
+            </div>
+
+        </div>
+    </div> <!-- /.container -->
+</div> <!-- /.section-colored -->
+
+<div class="container container-int">
+
+    <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">Movies</li>
+    </ol>
+    <div class="row">
+        <div class="col-lg-3">
+            <form method="get" id="filter">
+                <h3 class="searchHeader">Enter movie name:</h3>
+                <div class="form-group">
+
+                    <input class="form-control" name="movieName" value="@ViewBag.MovieName" type="text">
+                    <span class="validity"></span>
+                </div>
+                <h3 class="searchHeader">Select type:</h3>
+                 @foreach (var item in @ViewBag.Categories)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="categoyId" value="@item.CategoryId"  style="transform: scale(1.5);">
+                        <label class="form-check-label" for="defaultCheck1" style="font-weight: normal;font-size: 18px;margin-left: 10px;">
+                            @item.CategoryName
+                        </label>
+                    </div>
+                }
+                 
+                
+                <h3 class="searchHeader">Less than vision date:</h3>
+                <div class="form-group">
+
+                    <input class="form-control" type="date" name="vdate"  min="2022-05-01" max="2022-06-30">
+                    
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary"  type="submit" value="Apply Filter">
+                </div>
+                
+            </form>
+
+        </div>
+        <div class="col-lg-9">
+           <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 col-sm-4 portfolio-item">
+                   
+                    <a href="/Movie/GetMovie/@item.MovieId" class="link-portfolio">
+                        <div class="overlay-portfolio">
+                            <h3>@item.MovieName</h3>
+                            <h4>@(((DateTime)item.MovieVisionDate).ToString("dd-MMM-yyyy"))</h4>
+                            @if (item.MovieReview != null)
+                            {
+                                    <small class="text-muted">
+                                        @item.MovieReview.Substring(0,item.MovieReview.Substring(0,130).LastIndexOf(" ")) ...
+                                    </small>
+                            }
+                                <h4>Click for Buy</h4>
+                        </div><!-- /.overlay-portfolio -->
+                        @if(item.MovieBanner!=null)
+                        {
+                            var base64 = Convert.ToBase64String(@item.MovieBanner!);
+                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64); 
+                            <img class="img-responsive img-home-portfolio" src="@imgSrc" alt="movie">
+                        }
+                        else
+                        {
+                            <img class="img-responsive img-home-portfolio" src="/images/no-image.jpg" alt="movie">
+                    
+                        }
+                            
+                        
+                    </a>
+                </div>
+
+            }
+
+           </div>     
+        </div>
+    </div>
+
+</div><!-- /.container -->
